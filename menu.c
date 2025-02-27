@@ -367,6 +367,6 @@ int main() {
                 break;
         }
     } while (menu_selecionado != 5);
-
+    // Encerra o programa
     return 0;
 }
