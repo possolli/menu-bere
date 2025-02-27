@@ -1,194 +1,372 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-float faturamento = 0;
-int quantidadeDeVendas = 0;
+// Adicionamos as funções na ordem que está no menu principal.
+// Cada variavel representa o valor total em cada area de compras.
+float total_limpeza, total_alimentos, total_padaria, total_geral, total_faturamento = 0.0;
+int total_produtos, total_vendas = 0;
 
-/* Função para exibir o menu principal */
-void exibirMenuPrincipal() {
-    printf("\nMenu Principal\n");
-    printf("1. Material de Limpeza\n");
-    printf("2. Venda de Alimentos\n");
-    printf("3. Padaria\n");
-    printf("4. Pagamento\n");
-    printf("5. Sair\n");
-    printf("Escolha uma categoria: ");
+// Informacoes para o menu de saida
+int numero_produtos;
+
+// Variavel usada para indicar qual menu estamos exibindo.
+int menu_selecionado;
+
+// Primeiro menu da berenice.
+void exibir_menu_principal() {
+  printf("\n*********************** MENU PRINCIPAL ***********************\n");
+  printf("1.\tMateriais de Limpeza\n");
+  printf("2.\tVenda de Alimentos\n");
+  printf("3.\tPadaria\n");
+  printf("4.\tPagamento\n");
+  printf("5. Sair\n");
+  printf("***************************************************************\n\n");
 }
 
-/* Exibir produtos de material de limpeza */
-void exibirProdutosMaterialDeLimpeza() {
-    printf("\nCodigo - Nome do Item - Valor (Unidade)\n");
-    printf("11 - Detergente - R$1.99\n");
-    printf("12 - Sabão em Po - R$8.99\n");
-    printf("13 - Esponja - R$1.50\n");
-    printf("14 - Amaciante - R$15.00\n");
-    printf("15 - Voltar ao Menu Principal\n");
-}
+// Menu de limpeza
+void exibir_menu_limpeza() {
+    int produto_codigo, produto_quantidade;
+    float produto_valor, produto_total;
 
-/* Exibir produtos de alimentos */
-void exibirProdutosAlimentos() {
-    printf("\nCodigo - Nome do Item - Valor (Unidade)\n");
-    printf("21 - Cafe - R$19.99\n");
-    printf("22 - Leite - R$5.90\n");
-    printf("23 - Arroz - R$4.50\n");
-    printf("24 - Feijão Preto - R$8.00\n");
-    printf("25 - Acúcar - R$5.00\n");
-    printf("26 - Voltar ao Menu Principal\n");
-}
+    do {
+        printf("\n************************ MENU LIMPEZA ************************\n");
+        printf("Item (Codigo)\t\tNome\t\t\t\tValor (unidade)\n");
+        printf("11.\t\t\tDetergente\t\t\tR$1.99\n");
+        printf("12.\t\t\tSabao em Po (1KG)\t\tR$8.99\n");
+        printf("13.\t\t\tEsponja\t\t\t\tR$1.50\n");
+        printf("14.\t\t\tAmaciante (1LT)\t\t\tR$15.00\n");
+        printf("15. Voltar ao Menu Principal\n");
+        printf("***************************************************************\n\n");
 
-/* Exibir produtos de material de limpeza */
-void exibirProdutosPadaria() {
-    printf("\nCodigo - Nome do Item - Valor (Unidade)\n");
-    printf("31 - Pão de Forma - R$9.50\n");
-    printf("32 - Pão Integral - R$12.50\n");
-    printf("33 - Pão Francês - R$1.90\n");
-    printf("34 - Sonho - R$8.50\n");
-    printf("35 - Voltar ao Menu Principal\n");
-}
+        printf(">>>>>>>>>> Insira o codigo: ");
+        scanf("%d", &produto_codigo);
 
-/* Função para processar a compra */
-float processarCompra(int categoria) {
-    int codigo, quantidade;
-    float total = 0;
-    
-    while (1) {
-        switch (categoria) {
-            case 1: exibirProdutosMaterialDeLimpeza(); break;
-            case 2: exibirProdutosAlimentos(); break;
-            case 3: exibirProdutosPadaria(); break;
-        }
-        
-        printf("Digite o codigo do item ou 0 para voltar: ");
-        scanf("%d", &codigo);
-        if (codigo == 15 || codigo == 26 || codigo == 35) break;
+        if (produto_codigo == 15) return;
 
-        float preco = 0;
-        switch (codigo) {
+        switch (produto_codigo) {
             case 11:
-                preco = 1.99;
+                produto_valor = 1.99;
                 break;
             case 12:
-                preco = 8.99;
+                produto_valor = 8.99;
                 break;
             case 13:
-                preco = 1.50;
+                produto_valor = 1.50;
                 break;
             case 14:
-                preco = 15.00;
+                produto_valor = 15.00;
                 break;
+            default:
+                // Vai aparecer caso o usuario digite um numero/algo invalido.
+                printf("\n\n* [ERRO] Por favor, insira um dos valores listados acima!\n");
+                continue;
+        }
+
+        printf(">>>>>>>>>> Insira a quantidade: ");
+        scanf("%d", &produto_quantidade);
+
+        while (produto_quantidade <= 0) {
+            printf("\n* [AVISO] Insira uma quantidade maior que zero!\n\n");
+            printf(">>>>>>>>>> Insira a quantidade: ");
+            scanf("%d", &produto_quantidade);
+        }
+
+        produto_total = (produto_valor * produto_quantidade);
+        numero_produtos += produto_quantidade;
+        total_limpeza += produto_total;
+        total_geral += produto_total;
+
+        printf("\n* [SUCESSO] Foi adicionado +R$%.2f ao carrinho!\n", produto_total);
+        printf("* [INFO] Total do carrinho de Limpeza: R$%.2f\n", total_limpeza);
+        
+    } while (1);
+}
+
+// Menu de alimentos
+void exibir_menu_alimentos() {
+    int produto_codigo, produto_quantidade;
+    float produto_valor, produto_total;
+
+    do {
+        printf("\n************************ MENU ALIMENTOS ***********************\n");
+        printf("Item (Codigo)\t\tNome\t\t\t\tValor (unidade)\n");
+        printf("21.\t\t\tCafe\t\t\t\tR$19.99\n");
+        printf("22.\t\t\tLeite (CAIXA)\t\t\tR$5.90\n");
+        printf("23.\t\t\tArroz (1KG)\t\t\tR$4.50\n");
+        printf("24.\t\t\tFeijao Preto (1KG)\t\tR$8.00\n");
+        printf("25.\t\t\tAcucar (1KG)\t\t\tR$5.00\n");
+        printf("26. Voltar ao Menu Principal\n");
+        printf("****************************************************************\n\n");
+
+        printf(">>>>>>>>>> Insira o codigo: ");
+        scanf("%d", &produto_codigo);
+
+        if (produto_codigo == 26) return;
+
+        switch (produto_codigo) {
             case 21:
-                preco = 19.99;
+                produto_valor = 19.99;
                 break;
             case 22:
-                preco = 5.90;
+                produto_valor = 5.90;
                 break;
             case 23:
-                preco = 4.50;
+                produto_valor = 4.50;
                 break;
             case 24:
-                preco = 8.00;
+                produto_valor = 8.00;
                 break;
             case 25:
-                preco = 5.00;
+                produto_valor = 5.00;
                 break;
+            default:
+                printf("\n* [ERRO] Codigo incorreto! Insira um codigo valido.\n");
+                continue;
+        }
+
+        printf(">>>>>>>>>> Insira a quantidade: ");
+        scanf("%d", &produto_quantidade);
+
+        while (produto_quantidade <= 0) {
+            printf("\n* [AVISO] Insira uma quantidade maior que zero!\n\n");
+            printf(">>>>>>>>>> Insira a quantidade: ");
+            scanf("%d", &produto_quantidade);
+        }
+
+        produto_total = (produto_valor * produto_quantidade);
+        numero_produtos += produto_quantidade;
+        total_alimentos += produto_total;
+        total_geral += produto_total;
+
+        printf("\n* [SUCESSO] Foi adicionado +R$%.2f ao carrinho!\n", produto_total);
+        printf("* [INFO] Total do carrinho de Alimentos: R$%.2f\n", total_alimentos);
+        
+    } while (1);
+}
+
+void exibir_menu_padaria() {
+    int produto_codigo, produto_quantidade;
+    float produto_valor, produto_total;
+
+    do {
+        printf("\n************************ MENU PADARIA ************************\n");
+        printf("Item (Codigo)\t\tNome\t\t\t\tValor (unidade)\n");
+        printf("31.\t\t\tPao de Forma\t\t\tR$9.50\n");
+        printf("32.\t\t\tPao Integral\t\t\tR$12.50\n");
+        printf("33.\t\t\tPao Frances\t\t\tR$1.90\n");
+        printf("34.\t\t\tSonho\t\t\t\tR$8.50\n");
+        printf("35. Voltar ao Menu Principal\n");
+        printf("\n\n");
+
+        printf(">>>>>>>>>> Insira o codigo: ");
+        scanf("%d", &produto_codigo);
+
+        if (produto_codigo == 35) return;
+
+        switch (produto_codigo) {
             case 31:
-                preco = 9.50;
+                produto_valor = 9.50;
                 break;
             case 32:
-                preco = 12.50;
+                produto_valor = 12.50;
                 break;
             case 33:
-                preco = 1.90;
+                produto_valor = 1.90;
                 break;
             case 34:
-                preco = 8.50;
+                produto_valor = 8.50;
                 break;
-            default: printf("Codigo invalido!\n"); continue;
+            default:
+                printf("\n* [ERRO] Codigo incorreto! Insira um codigo valido.\n");
+                continue;
         }
+
+        printf(">>>>>>>>>> Insira a quantidade: ");
+        scanf("%d", &produto_quantidade);
+
+        while (produto_quantidade <= 0) {
+            printf("\n* [AVISO] Insira uma quantidade maior que zero!\n\n");
+            printf(">>>>>>>>>> Insira a quantidade: ");
+            scanf("%d", &produto_quantidade);
+        }
+
+        produto_total = (produto_valor * produto_quantidade);
+        numero_produtos += produto_quantidade;
+        total_padaria += produto_total;
+        total_geral += produto_total;
+
+        printf("\n* [SUCESSO] Foi adicionado +R$%.2f ao carrinho!\n", produto_total);
+        printf("* [INFO] Total do carrinho de Padaria: R$%.2f\n", total_padaria);
         
-        printf("Quantidade: ");
-        scanf("%d", &quantidade);
-        total += preco * quantidade;
-        printf("Total acumulado: R$%.2f\n", total);
-    }
-    
-    return total;
+    } while (1);
 }
 
-/* Função para processar o pagamento */
-void processarPagamento(float totalMaterial, float totalAlimentos, float totalPadaria) {
-    float totalGeral = totalMaterial + totalAlimentos + totalPadaria;
-    float desconto = 0;
-    int metodo;
-
-    printf("\nResumo da Compra:\n");
-    printf("Material de Limpeza: R$%.2f\n", totalMaterial);
-    printf("Alimentos: R$%.2f\n", totalAlimentos);
-    printf("Padaria: R$%.2f\n", totalPadaria);
-    printf("Total Geral: R$%.2f\n", totalGeral);
-    
-    printf("Forma de pagamento:\n1 - Dinheiro\n2 - Cartão\nEscolha: ");
-    scanf("%d", &metodo);
-    
-    if (metodo == 1) {
-        if (totalGeral <= 50) desconto = totalGeral * 0.05;
-        else if (totalGeral < 100) desconto = totalGeral * 0.10;
-        else desconto = totalGeral * 0.18;
-
-        totalGeral -= desconto;
-        printf("Desconto aplicado: R$%.2f\n", desconto);
-        printf("Total com desconto: R$%.2f\n", totalGeral);
-        
-        float recebido;
-        printf("Valor recebido: R$");
-        scanf("%f", &recebido);
-        printf("Troco: R$%.2f\n", recebido - totalGeral);
-    } else {
-        int status;
-        printf("Pagamento na maquina (1 - Ok / 0 - Falhou): ");
-        scanf("%d", &status);
-        if (status == 0) {
-            printf("Pagamento falhou. Escolha outra forma de pagamento.\n");
-            processarPagamento(totalMaterial, totalAlimentos, totalPadaria);
-        }
-    }
-    faturamento += totalGeral;
-    quantidadeDeVendas++;
-    printf("Pagamento concluido!\n");
+void resetar_valores() {
+  total_limpeza = 0;
+  total_alimentos = 0;
+  total_padaria = 0;
+  total_geral = 0;
+  numero_produtos = 0;
 }
 
-void encerrarPrograma() {
-    printf("Programa encerrado!\n");
-    printf("Faturamento total: R$%.2f\n", faturamento);
-    printf("Quantidade de vendas: %d\n", quantidadeDeVendas);
+void exibir_menu_pagamento() {
+  int opcao_pagamento;
+  
+  do {
+      printf("\n************************* MENU PAGAMENTO **********************\n");
+      printf("1.\tDinheiro (COM DESCONTO!)\n");
+      printf("2.\tCartao\n");
+      printf("3. Voltar ao Menu Principal\n");
+      printf("***************************************************************\n");
+      printf("* VALOR LIMPEZA: R$%.2f\n", total_limpeza);
+      printf("* VALOR ALIMENTOS: R$%.2f\n", total_alimentos);
+      printf("* VALOR PADARIA: R$%.2f\n", total_padaria);
+      printf("* VALOR TOTAL (SEM DESCONTO): R$%.2f\n", total_geral);
+      printf("***************************************************************\n\n");
+
+      printf(">>>>>>>>>> Insira o metodo de pagamento: ");
+      scanf("%d", &opcao_pagamento);
+
+      if (opcao_pagamento == 1) {
+          float desconto = 0.0;
+
+          // Adicionando desconto com base nos valores
+          if (total_geral <= 50) {
+              desconto = (total_geral * 0.05);
+          } else if (total_geral < 100) {
+              desconto = (total_geral * 0.10);
+          } else {
+              desconto = (total_geral * 0.18);
+          }
+
+          // Aplicamos desconto diratemento no total de todos os produtos somados
+          total_geral -= desconto;
+
+          printf("\n* [INFO] DESCONTO: R$%.2f\n", desconto);
+          printf("* [INFO] VALOR TOTAL (COM DESCONTO): R$%.2f\n", total_geral);
+
+          float recebido;
+          
+          // Aqui nós garantimos que o valor recebido seja maior ou igual ao total geral
+          do {
+              printf("\n>>>>>>>>>> Insira o valor recebido R$: ");
+              scanf("%f", &recebido);
+
+              if (recebido < total_geral) {
+                  printf("\n* [ERRO] Valor insuficiente! Insira um valor maior ou igual a R$%.2f!\n", total_geral);
+              }
+          } while (recebido < total_geral);
+
+          float troco = (recebido - total_geral);
+
+          if (troco > 0) {
+              printf("\n* [INFO] Troco: R$%.2f", troco);
+          }
+
+          total_faturamento += total_geral;
+          total_produtos += numero_produtos;
+          total_vendas += 1;
+          printf("\n* [SUCESSO] Venda concluida!\n");
+
+          resetar_valores();
+          return; // Retorna ao menu principal
+      } else if (opcao_pagamento == 2) {
+          int status;
+
+          // Aqui estamos simulando um pagamento com cartão e garantindo que o status seja 0 ou 1
+          do {
+              printf("\n* [INFO] Pagamento na maquina (1: OK | 0: FALHOU): ");
+              scanf("%d", &status);
+
+              if (status != 0 && status != 1) {
+                  printf("\n* [ERRO] Opção inválida! Escolha 1 (OK) ou 0 (FALHOU)!\n");
+              }
+          } while (status != 0 && status != 1);
+
+          if (status == 0) {
+              printf("\n* [ERRO] Pagamento falhou - Escolha outra forma de pagamento!\n");
+          } else {
+              total_faturamento += total_geral;
+              total_produtos += numero_produtos;
+              total_vendas += 1;
+              printf("\n* [SUCESSO] Venda concluida!\n");
+
+              resetar_valores();
+              return; // Retorna ao menu principal
+          }
+      } else if (opcao_pagamento == 3) {
+          return; // Voltar ao menu principal
+      } else {
+          printf("\n* [ERRO] Por favor, insira um dos valores listados acima!\n");
+      }
+
+  } while (1); // Mantém o menu aberto até que uma ação seja concluída
+}
+
+// Função para encerrar o programa e mostrar o resumo final
+void encerrar_programa() {
+    printf("\n************************ MENU ENCERRADO ***********************\n");
+    printf("* [INFO] FATURAMENTO TOTAL: R$%.2f\n", total_faturamento);
+    printf("* [INFO] QNT. VENDAS: %d\n", total_vendas);
+    printf("* [INFO] QNT. PRODUTOS VENDIDOS: %d\n", total_produtos);
+    printf("****************************************************************");
 }
 
 int main() {
-    float totalMaterial = 0, totalAlimentos = 0, totalPadaria = 0;
-    int categoria;
-
     do {
-        exibirMenuPrincipal();
-        scanf("%d", &categoria);
-        
-        switch (categoria) {
+        exibir_menu_principal();
+        printf(">>>>>>>>>> ");
+        scanf("%d", &menu_selecionado);
+
+        switch (menu_selecionado) {
             case 1:
-                totalMaterial += processarCompra(1);
+                exibir_menu_limpeza();
                 break;
             case 2:
-                totalAlimentos += processarCompra(2);
+                exibir_menu_alimentos();
                 break;
             case 3:
-                totalPadaria += processarCompra(3);
+                exibir_menu_padaria();
                 break;
             case 4:
-                processarPagamento(totalMaterial, totalAlimentos, totalPadaria);
+                exibir_menu_pagamento();
                 break;
             case 5:
-                encerrarPrograma();
+                if (total_geral > 0) {
+                    printf("\n* [AVISO] Parece que tens items no seu carrinho!");
+                    printf("\n* [AVISO] Deseja realmente sair? (1: SIM | 2: NAO)\n\n");
+                    printf(">>>>>>>>>> ");
+
+                    int sair_selecionado;
+                    scanf("%d", &sair_selecionado);
+
+                    while (sair_selecionado != 1 && sair_selecionado != 2) {
+                        printf("\n* [AVISO] Digite uma opcao valida\n!");
+                        printf(">>>>>>>>>> ");
+                        scanf("%d", &sair_selecionado);
+                    }
+
+                    //menu_selecionado = 0;
+
+                    switch (sair_selecionado) {
+                        case 1:
+                            menu_selecionado = 5;
+                            encerrar_programa();
+                            break;
+                        case 2:
+                            menu_selecionado = 0;
+                            break;
+                    }
+                } else {
+                    encerrar_programa();
+                    return 0;
+                }
                 break;
-            default: printf("Opcao invalida!\n");
+            default:
+                printf("\n* [ERRO] Por favor, insira um dos valores listados acima!\n\n");
+                break;
         }
-    } while (categoria != 5);
-    
+    } while (menu_selecionado != 5);
+
     return 0;
 }
