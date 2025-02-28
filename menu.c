@@ -41,8 +41,6 @@ void exibir_menu_limpeza() {
         printf(">>>>>>>>>> Insira o codigo: ");
         scanf("%d", &produto_codigo);
 
-        if (produto_codigo == 15) return;
-
         switch (produto_codigo) {
             case 11:
                 produto_valor = 1.99;
@@ -56,6 +54,8 @@ void exibir_menu_limpeza() {
             case 14:
                 produto_valor = 15.00;
                 break;
+            case 15:
+                return;
             default:
                 // Vai aparecer caso o usuario digite um numero/algo invalido.
                 printf("\n\n* [ERRO] Por favor, insira um dos valores listados acima!\n");
@@ -79,7 +79,7 @@ void exibir_menu_limpeza() {
         printf("\n* [SUCESSO] Foi adicionado +R$%.2f ao carrinho!\n", produto_total);
         printf("* [INFO] Total do carrinho de Limpeza: R$%.2f\n", total_limpeza);
         
-    } while (1);
+    } while (produto_codigo != 15);
 }
 
 // Menu de alimentos
@@ -119,6 +119,8 @@ void exibir_menu_alimentos() {
             case 25:
                 produto_valor = 5.00;
                 break;
+            case 26:
+                return;
             default:
                 printf("\n* [ERRO] Codigo incorreto! Insira um codigo valido.\n");
                 continue;
@@ -141,7 +143,7 @@ void exibir_menu_alimentos() {
         printf("\n* [SUCESSO] Foi adicionado +R$%.2f ao carrinho!\n", produto_total);
         printf("* [INFO] Total do carrinho de Alimentos: R$%.2f\n", total_alimentos);
         
-    } while (1);
+    } while (produto_codigo != 26);
 }
 
 void exibir_menu_padaria() {
@@ -176,6 +178,8 @@ void exibir_menu_padaria() {
             case 34:
                 produto_valor = 8.50;
                 break;
+            case 35:
+                return;
             default:
                 printf("\n* [ERRO] Codigo incorreto! Insira um codigo valido.\n");
                 continue;
@@ -198,7 +202,7 @@ void exibir_menu_padaria() {
         printf("\n* [SUCESSO] Foi adicionado +R$%.2f ao carrinho!\n", produto_total);
         printf("* [INFO] Total do carrinho de Padaria: R$%.2f\n", total_padaria);
         
-    } while (1);
+    } while (produto_codigo != 35);
 }
 
 void resetar_valores() {
@@ -367,6 +371,6 @@ int main() {
                 break;
         }
     } while (menu_selecionado != 5);
-    // Encerra o programa
+
     return 0;
 }
